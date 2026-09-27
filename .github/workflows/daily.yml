@@ -1,0 +1,27 @@
+name: Firsat Avcisi
+
+on:
+  schedule:
+    # Her gun 06:00 UTC = 09:00 Turkiye saati
+    - cron: '0 6 * * *'
+  workflow_dispatch:  # Elle test icin
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Bagimliliklari kur
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: Firsat avcisini calistir
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python firsat_avcisi.py
